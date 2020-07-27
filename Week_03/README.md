@@ -2,13 +2,13 @@
 
 ## 刷题日记
 
-目标 300 道 已完成 61 道
+目标 300 道 已完成 64 道
 
 [题目是每天新练习的，不包括过遍数的题目，练习时间数据来源于wakatime]
 
 | 时间 | 题目     | 练习时间 |
 | ---- | -------- | -------- |
-| 7/27 | 1143、72 |          |
+| 7/27 | 1143、72、50、169、17 | 2 hrs 11 mins |
 
 ## 动态规划
 
@@ -87,6 +87,78 @@ class Solution {
     public int min(int i,int j,int k){
         return Math.min(i,Math.min(j,k));
     }
+}
+```
+
+## 分治
+
+### 递归模板
+
+```java
+public void recur(level,param1...){
+    if(level>MAX_LEVEL){
+        return ;
+    }
+    
+    process(param1....)
+        
+    recur(level+1,p1...);
+    
+    //reset
+}
+```
+
+#### 括号生成大法
+
+括号生成题目，要么左括号，要么右括号。这个思想在很多题都可以用到。
+
+1. 子集：要么放，要么不放
+
+```java
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res=new ArrayList<>();
+        generate(res,new ArrayList<>(),nums,0);
+        return res;
+    }
+
+    public void generate(List<List<Integer>> res,List<Integer> temp,int[] nums,int start){
+        if(start==nums.length){
+            res.add(new ArrayList(temp));
+            return ;
+        }
+
+        generate(res,temp,nums,start+1);
+        temp.add(nums[start]);
+        generate(res,temp,nums,start+1);
+        //reset
+        temp.remove(temp.size()-1);
+    }
+}
+```
+
+2. 背包：要么放，要么不放
+
+### 分支模板
+
+```java
+public void divide_problem(problem,param1..){
+    if(problem==null){
+        print_result;
+        return ;
+    }
+    
+    //data prepare
+    data=prepare_data(problem);
+    subproblems=split_problem(problem,data);
+    
+    //conquer subproblem
+    subresult1=divide_problem(subproblems[0],param1...);
+    subresult2=divide_problem(subproblems[1],param1...);
+    subresult3=divide_problem(subproblems[2],param1...);
+    
+    //process result
+    result=process_result(subresult11,subresult2...);
 }
 ```
 
