@@ -9,6 +9,7 @@
 | 时间 | 题目     | 练习时间 |
 | ---- | -------- | -------- |
 | 7/27 | 1143、72、50、169、17、51 | 2 hrs 30 mins |
+| 7/28 | 887 | 1 hrs 53 mins |
 
 ## 动态规划
 
@@ -86,6 +87,86 @@ class Solution {
 
     public int min(int i,int j,int k){
         return Math.min(i,Math.min(j,k));
+    }
+}
+```
+
+>leetcode 887
+>
+>题目大意：有N层楼，给你K个鸡蛋，问你最坏情况下，最少要花多少次机会找出楼层F
+>
+>其中楼层F表示从大于等于F的楼层扔鸡蛋，鸡蛋都不会碎。从低于F扔鸡蛋会碎。
+
+【最坏情况】
+
+举个例子例如7层，从第一层开始扔，扔到最后一层都没有碎，那么此时就是最坏的情况。
+
+【最少次数】
+
+还是以上面的例子为例，可以使用二分法来扔鸡蛋，这样就能够把次数减少到logN
+
+1. 明确状态 表示剩下K个鸡蛋，楼层的范围为N
+2. 明确选择 从哪一层开始扔鸡蛋
+3. 明确dp，dp-i-j 表示剩下i个鸡蛋楼层范围为j
+4. base case: 如果楼层小于等于1，那么次数就是N。如果鸡蛋只有一个那么只能使用线性的方法进行尝试。
+
+```java
+class Solution {
+    public int superEggDrop(int K, int N) {
+        int[][] dp=new int[K+1][N+1];
+        return helper(dp,K,N);
+    }
+    public int helper(int[][] dp,int k,int n){
+        if(n<=1){
+            return n;
+        }
+        if(k==1){
+            return n;
+        }
+        if(dp[k][n]>0){
+            return dp[k][n];
+        }
+
+        int low=1,hight=n,result=n;
+        while(low<hight){
+            int mid=(low+hight)/2;
+            int left=helper(dp,k-1,mid-1);
+            int right=helper(dp,k,n-mid);
+            result=Math.min(result,Math.max(left,right)+1);
+            if(left==right){
+                break;
+            }else if(left<right){
+                low=mid+1;
+            }else{
+                hight=mid;
+            }
+        }
+        dp[k][n]=result;
+        return dp[k][n];
+    }
+}
+```
+
+>leetcode 198
+>
+>题目大意：抢劫，一排房子，不能进入连续的房子进行抢劫。
+
+1. 明确状态：当前的房子
+2. 明确选择：抢或者不抢
+3. 明确dp：dp-i 表示第i个房子
+4. 状态转移：如果第i家抢，那么dp-i=nums[i]+dp-i+2，如果不抢就是dp-i=dp-i+1
+
+```java
+class Solution {
+    public int rob(int[] nums) {
+        int n=nums.length;
+        int[] dp=new int[n+2];
+
+        for(int i=n-1;i>=0;i--){
+            dp[i]=Math.max(dp[i+1],nums[i]+dp[i+2]);
+        }
+
+        return dp[0];
     }
 }
 ```
