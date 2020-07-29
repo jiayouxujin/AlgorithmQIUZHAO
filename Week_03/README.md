@@ -10,6 +10,7 @@
 | ---- | -------- | -------- |
 | 7/27 | 1143、72、50、169、17、51 | 2 hrs 30 mins |
 | 7/28 | 887、198、102 | 2 hrs 14 mins |
+| 7/29 | 213、337 | 1 hrs 6 mins |
 
 ## 动态规划
 
@@ -167,6 +168,81 @@ class Solution {
         }
 
         return dp[0];
+    }
+}
+```
+
+>leetcode 213
+>
+>题目大意：与上一题基本相同，不同的地方就是房子是环形的，也就是说首尾是相连的，那么就无法同时抢首尾
+
+```java
+class Solution {
+    public int rob(int[] nums) {
+        if(nums.length==1){
+            return nums[0];
+        }
+        return Math.max(solve(nums,0,nums.length-2),solve(nums,1,nums.length-1));
+    }
+
+    public int solve(int[] nums,int start,int end){
+        int dp_i=0,dp_i1=0,dp_i2=0;
+        for(int i=end;i>=start;i--){
+            dp_i=Math.max(dp_i1,dp_i2+nums[i]);
+            dp_i2=dp_i1;
+            dp_i1=dp_i;
+        }
+        return dp_i;
+    }
+}
+```
+
+>leetcode 337
+>
+>题目大意：还是抢劫，不过这回房子是二叉树的形式
+
+还是按照我们先前讨论的思路就是抢或者不抢，如果抢的下一个就不抢，如果不抢的话下一个可以抢可以不抢具体要看哪种方案比较大。
+
+```java
+class Solution {
+    Map<TreeNode,Integer> map=new HashMap<>();
+
+    public int rob(TreeNode root) {
+        if(root==null){
+            return 0;
+        }
+        if(map.containsKey(root)){
+            return map.get(root);
+        }
+
+        int rob_it=root.val+(root.left==null?0:rob(root.left.left)+rob(root.left.right))+(root.right==null?0:rob(root.right.left)+rob(root.right.right));
+        int not_rob=rob(root.left)+rob(root.right);
+
+        int res=Math.max(rob_it,not_rob);
+        map.put(root,res);
+        return res;
+    }
+}
+```
+
+```java
+class Solution {
+    public int rob(TreeNode root) {
+        int[] res=dp(root);
+        return Math.max(res[0],res[1]);
+    }
+
+    public int[] dp(TreeNode root){
+        if(root==null){
+            return new int[]{0,0};
+        }
+        int[] left=dp(root.left);
+        int[] right=dp(root.right);
+
+        int rob_it=root.val+left[0]+right[0];
+        int no_rob=Math.max(left[0],left[1])+Math.max(right[0],right[1]);
+
+        return new int[]{no_rob,rob_it};
     }
 }
 ```
