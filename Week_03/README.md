@@ -2,7 +2,7 @@
 
 ## 刷题日记
 
-目标 300 道 已完成 70 道
+目标 300 道 已完成 74 道
 
 [题目是每天新练习的，不包括过遍数的题目，练习时间数据来源于wakatime]
 
@@ -11,7 +11,7 @@
 | 7/27 | 1143、72、50、169、17、51 | 2 hrs 30 mins |
 | 7/28 | 887、198、102 | 2 hrs 14 mins |
 | 7/29 | 213、337 | 1 hrs 6 mins |
-| 7/30 |  | 1 hrs 10 mins |
+| 7/30 | 543、343、455、860 | 1 hrs 56 mins |
 
 ## 动态规划
 
@@ -248,6 +248,30 @@ class Solution {
 }
 ```
 
+>leetcode 343
+>
+>题目大意：把一个整数分解，然后求该分解乘积的最大值
+
+1. 明确状态：拆分的整数
+2. 明确选择：拆分的整数要么继续拆分，要么不拆分
+
+```java
+class Solution {
+    public int integerBreak(int n) {
+        int[] dp=new int[n+1];
+        for(int i=2;i<=n;i++){
+            int curMax=0;
+            for(int j=1;j<i;j++){
+                curMax=Math.max(curMax,Math.max(j*(i-j),j*dp[i-j]));
+            }
+            dp[i]=curMax;
+        }
+
+        return dp[n];
+    }
+}
+```
+
 ## 分治
 
 ### 递归模板
@@ -319,6 +343,14 @@ public void divide_problem(problem,param1..){
     result=process_result(subresult11,subresult2...);
 }
 ```
+
+## 二分查找
+
+### 前提
+
+1. 单调性(有序里查找)
+2. 存在上下界
+3. 可以通过索引访问
 
 
 
