@@ -1,7 +1,7 @@
 /*
- * @lc app=leetcode id=337 lang=java
+ * @lc app=leetcode id=543 lang=java
  *
- * [337] House Robber III
+ * [543] Diameter of Binary Tree
  */
 
 // @lc code=start
@@ -21,21 +21,21 @@
  * }
  */
 class Solution {
-    Map<TreeNode,Integer> map=new HashMap<>();
+    int res;
+    public int diameterOfBinaryTree(TreeNode root) {
+        maxDepth(root);
+        return res;
+    }
 
-    public int rob(TreeNode root) {
+    public int maxDepth(TreeNode root){
         if(root==null){
             return 0;
         }
-        if(map.containsKey(root)){
-            return map.get(root);
-        }
+        int left=maxDepth(root.left);
+        int right=maxDepth(root.right);
 
-        int rob_it=root.val+(root.left==null?0:rob(root.left.left)+rob(root.left.right))+(root.right==null?0:rob(root.right.left)+rob(root.right.right));
-        int no_rob=rob(root.left)+rob(root.right);
-
-        int res=Math.max(rob_it,no_rob);
-        map.put
+        res=Math.max(res,left+right);
+        return Math.max(left,right)+1;
     }
 }
 // @lc code=end
