@@ -12,3 +12,5 @@
 | 8/4  |  | 0 hrs 55 mins |
 | 8/5  |  | 0 hrs 30 mins |
 | 8/6  | 221、647、1277 | 0 hrs 40 mins |
+| 8/7  |  | 0 hrs 18 mins |
+| 8/8  |  | 0 hrs 6 mins |
