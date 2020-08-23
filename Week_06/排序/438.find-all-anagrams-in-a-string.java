@@ -1,26 +1,26 @@
-# 学习笔记
+/*
+ * @lc app=leetcode id=438 lang=java
+ *
+ * [438] Find All Anagrams in a String
+ */
 
-## 滑动窗口
-
-### 模板
-
-```java
- public String minWindow(String s, String t) {
+// @lc code=start
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
         HashMap<Character,Integer> needMap=new HashMap<>();
         HashMap<Character,Integer> windowMap=new HashMap<>();
 
-        for(char c:t.toCharArray()){
+        List<Integer> res=new ArrayList<>();
+        for(char c:p.toCharArray()){
             needMap.put(c,needMap.getOrDefault(c,0)+1);
         }
 
         int left=0,right=0;
         int valid=0;
-        int start=0,len=Integer.MAX_VALUE;
-
+        
         while(right<s.length()){
             char c=s.charAt(right);
             right++;
-
             if(needMap.containsKey(c)){
                 windowMap.put(c,windowMap.getOrDefault(c,0)+1);
                 if(windowMap.get(c).equals(needMap.get(c)))
@@ -28,9 +28,8 @@
             }
 
             while(valid==needMap.size()){
-                if(right-left<len){
-                    start=left;
-                    len=right-left;
+                if(right-left==p.length()){
+                    res.add(left);
                 }
 
                 char d=s.charAt(left);
@@ -42,7 +41,8 @@
                 }
             }
         }
-        return len==Integer.MAX_VALUE?"":s.substring(start,start+len);
+        return res;
     }
-```
+}
+// @lc code=end
 

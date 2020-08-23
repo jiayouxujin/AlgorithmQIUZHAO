@@ -1,11 +1,12 @@
-# 学习笔记
+/*
+ * @lc app=leetcode id=76 lang=java
+ *
+ * [76] Minimum Window Substring
+ */
 
-## 滑动窗口
-
-### 模板
-
-```java
- public String minWindow(String s, String t) {
+// @lc code=start
+class Solution {
+    public String minWindow(String s, String t) {
         HashMap<Character,Integer> needMap=new HashMap<>();
         HashMap<Character,Integer> windowMap=new HashMap<>();
 
@@ -23,8 +24,9 @@
 
             if(needMap.containsKey(c)){
                 windowMap.put(c,windowMap.getOrDefault(c,0)+1);
-                if(windowMap.get(c).equals(needMap.get(c)))
+                if(windowMap.get(c).equals(needMap.get(c))){
                     valid++;
+                }
             }
 
             while(valid==needMap.size()){
@@ -35,6 +37,7 @@
 
                 char d=s.charAt(left);
                 left++;
+
                 if(needMap.containsKey(d)){
                     if(windowMap.get(d).equals(needMap.get(d)))
                         valid--;
@@ -44,5 +47,6 @@
         }
         return len==Integer.MAX_VALUE?"":s.substring(start,start+len);
     }
-```
+}
+// @lc code=end
 

@@ -1,48 +1,51 @@
-# 学习笔记
+/*
+ * @lc app=leetcode id=567 lang=java
+ *
+ * [567] Permutation in String
+ */
 
-## 滑动窗口
-
-### 模板
-
-```java
- public String minWindow(String s, String t) {
+// @lc code=start
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
         HashMap<Character,Integer> needMap=new HashMap<>();
         HashMap<Character,Integer> windowMap=new HashMap<>();
 
-        for(char c:t.toCharArray()){
+        for(char c:s1.toCharArray()){
             needMap.put(c,needMap.getOrDefault(c,0)+1);
         }
 
         int left=0,right=0;
         int valid=0;
-        int start=0,len=Integer.MAX_VALUE;
+        int start=0,len=0;
 
-        while(right<s.length()){
-            char c=s.charAt(right);
+        while(right<s2.length()){
+            char c=s2.charAt(right);
             right++;
 
             if(needMap.containsKey(c)){
                 windowMap.put(c,windowMap.getOrDefault(c,0)+1);
-                if(windowMap.get(c).equals(needMap.get(c)))
+                if(needMap.get(c).equals(windowMap.get(c)))
                     valid++;
             }
 
             while(valid==needMap.size()){
-                if(right-left<len){
-                    start=left;
-                    len=right-left;
+                //比较是否存在
+                if(right-left==s1.length()){
+                    return true;
                 }
 
-                char d=s.charAt(left);
+                char d=s2.charAt(left);
                 left++;
+
                 if(needMap.containsKey(d)){
-                    if(windowMap.get(d).equals(needMap.get(d)))
+                    if(needMap.get(d).equals(windowMap.get(d)))
                         valid--;
                     windowMap.put(d,windowMap.get(d)-1);
                 }
             }
         }
-        return len==Integer.MAX_VALUE?"":s.substring(start,start+len);
+        return false;
     }
-```
+}
+// @lc code=end
 
