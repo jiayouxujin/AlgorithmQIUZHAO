@@ -7,18 +7,24 @@
 // @lc code=start
 class Solution {
     public int findTargetSumWays(int[] nums, int S) {
-        if(nums==null||nums.length==0){
+        int sum=0;
+        for(int n:nums){
+            sum+=n;
+        }
+        int newTarget=(sum+S)/2;
+        if(newTarget*2!=sum+S||sum<S){
             return 0;
         }
-        return helper(nums,S,0);
-    }
 
-    public int helper(int[] nums,int s,int index){
-        if(index==nums.length){
-            return s==0?1:0;
+        int[] dp=new int[newTarget+1];
+
+        dp[0]=1;
+        for(int n:nums){
+            for(int s=newTarget;s>=n;s--){
+                dp[s]+=dp[s-n];
+            }
         }
-
-        return helper(nums,s-nums[index],index+1)+helper(nums,s+nums[index],index+1);
+        return dp[newTarget];
     }
 }
 // @lc code=end
